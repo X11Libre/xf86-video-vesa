@@ -45,6 +45,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <fcntl.h>
 #include "vesa.h"
 
 /* All drivers initialising the SW cursor need this */
@@ -429,7 +430,7 @@ VESAInitScrn(ScrnInfoPtr pScrn)
 #ifdef XSERVER_LIBPCIACCESS
 #ifdef __linux__
 /*
- * check if a file exist in directory
+ * check if a file exists in directory and can be opened
  * should be equivalent to a glob ${directory}/${prefix}*
  */
 
@@ -437,22 +438,42 @@ static Bool
 VESAFileExistsPrefix(const char *directory, const char *prefix) {
     DIR *dir;
     struct dirent *entry;
-    Bool found = FALSE;
+    int dirlen = strlen(directory);
     int len = strlen(prefix);
-    
+    char filepath[PATH_MAX];
+
+    /* Never happens, since we know the args to this function */
+    if (dirlen + 1 + len + 1 > PATH_MAX) {
+        return FALSE;
+    }
+
     dir = opendir(directory);
     if (!dir)
         return FALSE;
 
+    memcpy(filepath, directory, dirlen);
+    filepath[dirlen] = '/';
+    char *filename = filepath + dirlen + 1;
+
     while ((entry = readdir(dir)) != NULL) {
-        if (strlen(entry->d_name) > len && 
+        int filelen = strlen(entry->d_name);
+        if (filelen > len &&
             !memcmp(entry->d_name, prefix, len)) {
-            found = TRUE;
-            break;
+            if (dirlen + 1 + filelen + 1 > PATH_MAX) {
+                /* Filename too long */
+                continue;
+            }
+            memcpy(filename, entry->d_name, filelen + 1);
+            int fd = open(filepath, O_RDONLY);
+            if (fd > -1) {
+                close(fd);
+                closedir(dir);
+                return TRUE;
+            }
         }
     }
     closedir(dir);
-    return found;
+    return FALSE;
 }
 #endif
 
@@ -467,9 +488,9 @@ VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
     ScrnInfoPtr pScrn;
 
 #ifdef __linux__
-    if (VESAFileExistsPrefix("/dev", "fb") || 
-        VESAFileExistsPrefix("/dev/dri", "card")) {
-        ErrorF("vesa: Refusing to run, Framebuffer or dri device present\n");
+    /* XXX Is this really needed? We check for a bound kernel driver bellow. XXX */
+    if (VESAFileExistsPrefix("/dev/dri", "card")) {
+        ErrorF("vesa: Refusing to run, dri device present\n");
         return FALSE;
     }
 #endif
