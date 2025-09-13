@@ -479,10 +479,15 @@ VESAPciProbe(DriverPtr drv, int entity_num, struct pci_device *dev,
     if (pScrn != NULL) {
 	VESAPtr pVesa;
 
+#if !defined (__FreeBSD__) && !defined (__DragonFly__)
 	if (pci_device_has_kernel_driver(dev)) {
 	    ErrorF("vesa: Ignoring device with a bound kernel driver\n");
 	    return FALSE;
 	}
+#else
+	xf86DrvMsg(-1,X_WARNING,"vesa: Not checking for attached KMS drivers on FreeBSD and DragonFlyBSD.\n\
+			Using this driver with a kernel KMS driver loaded can cause a blackscreen!\n");
+#endif
 
 	pVesa = VESAGetRec(pScrn);
 	VESAInitScrn(pScrn);
