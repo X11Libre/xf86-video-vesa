@@ -22,10 +22,10 @@
 
 # Initialize Autoconf
 AC_PREREQ([2.60])
-AC_INIT([xf86-video-vesa],
+AC_INIT([xlibre-xf86-video-vesa],
         [2.6.0],
-        [https://gitlab.freedesktop.org/xorg/driver/xf86-video-vesa/-/issues],
-        [xf86-video-vesa])
+        [https://github.com/X11Libre/xf86-video-vesa/issues],
+        [xlibre-xf86-video-vesa])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR(.)
