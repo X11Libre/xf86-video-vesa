@@ -57,12 +57,7 @@
 #include "xf86Modes.h"
 
 /* DPMS */
-#ifdef HAVE_XEXTPROTO_71
 #include <X11/extensions/dpmsconst.h>
-#else
-#define DPMS_SERVER
-#include <X11/extensions/dpms.h>
-#endif
 #include "compat-api.h"
 
 /* Mandatory functions */

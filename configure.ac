@@ -60,12 +60,7 @@ XORG_DRIVER_CHECK_EXT(DPMSExtension, xextproto)
 
 # Obtain compiler/linker options for the driver dependencies
 PKG_CHECK_MODULES(XORG, xorg-server >= 1.18 xproto fontsproto $REQUIRED_MODULES)
-PKG_CHECK_MODULES(XEXT, [xextproto >= 7.0.99.1],
-                  HAVE_XEXTPROTO_71="yes", HAVE_XEXTPROTO_71="no")
-
-if test "x$HAVE_XEXTPROTO_71" = xyes; then
-    AC_DEFINE(HAVE_XEXTPROTO_71, 1, [xextproto 7.1 available])
-fi
+PKG_CHECK_MODULES(XEXT, [xextproto >= 7.0.99.1])
 
 save_CFLAGS="$CFLAGS"
 CFLAGS="$XORG_CFLAGS"
