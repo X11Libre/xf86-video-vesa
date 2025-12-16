@@ -408,6 +408,12 @@ VESAInitScrn(ScrnInfoPtr pScrn)
  * should be equivalent to a glob ${directory}/${prefix}*
  */
 
+#include <limits.h>
+
+#ifndef PATH_MAX
+#define PATH_MAX 4096
+#endif
+
 static Bool
 VESAFileExistsPrefix(const char *directory, const char *prefix) {
     DIR *dir;

@@ -25,7 +25,7 @@
 # _ladir passes a dummy rpath to libtool so the thing will actually link
 # TODO: -nostdlib/-Bstatic/-lgcc platform magic, not installing the .a, etc.
 
-AM_CFLAGS = $(BASE_CFLAGS) $(XORG_CFLAGS) $(PCIACCESS_CFLAGS)
+AM_CFLAGS = $(BASE_CFLAGS) $(XORG_CFLAGS) $(PCIACCESS_CFLAGS) -std=c99
 
 vesa_drv_la_LTLIBRARIES = vesa_drv.la
 vesa_drv_la_LDFLAGS = -module -avoid-version
