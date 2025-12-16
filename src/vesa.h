@@ -59,9 +59,7 @@
 
 #include "fb.h"
 
-#ifdef XSERVER_LIBPCIACCESS
 #include <pciaccess.h>
-#endif
 
 #define VESA_VERSION		4000
 #define VESA_NAME		"VESA"
@@ -78,12 +76,7 @@ typedef struct _VESARec
     EntityInfoPtr pEnt;
     CARD16 major, minor;
     VbeInfoBlock *vbeInfo;
-#ifdef XSERVER_LIBPCIACCESS
     struct pci_device *pciInfo;
-#else
-    pciVideoPtr pciInfo;
-    PCITAG pciTag;
-#endif
     int curBank, bankSwitchWindowB;
     CARD16 maxBytesPerScanline;
     unsigned long mapPhys, mapOff, mapSize;	/* video memory */
