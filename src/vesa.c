@@ -211,8 +211,8 @@ static XF86ModuleVersionInfo vesaVersionRec =
  */
 _X_EXPORT XF86ModuleData vesaModuleData = { &vesaVersionRec, vesaSetup, NULL };
 
-static pointer
-vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
+static void*
+vesaSetup(void *Module, void *Options, int *ErrorMajor, int *ErrorMinor)
 {
     static Bool Initialised = FALSE;
 
@@ -220,7 +220,7 @@ vesaSetup(pointer Module, pointer Options, int *ErrorMajor, int *ErrorMinor)
     {
         Initialised = TRUE;
         xf86AddDriver(&VESA, Module, 1);
-        return (pointer)TRUE;
+        return (void*)TRUE;
     }
 
     if (ErrorMajor)
@@ -542,7 +542,7 @@ VESAPreInit(ScrnInfoPtr pScrn, int flags)
     VbeModeInfoBlock *mode;
     Gamma gzeros = {0.0, 0.0, 0.0};
     rgb rzeros = {0, 0, 0};
-    pointer pDDCModule;
+    void *pDDCModule;
     int i;
     int flags24 = 0;
     int defaultDepth = 0;
@@ -1553,7 +1553,7 @@ VESASaveRestore(ScrnInfoPtr pScrn, vbeSaveRestoreFunction function)
         SaveFonts(pScrn);
 
         if (pVesa->major > 1) {
-            if (!VBESaveRestore(pVesa->pVbe,function,(pointer)&pVesa->state,
+            if (!VBESaveRestore(pVesa->pVbe,function,(void*)&pVesa->state,
                                 &pVesa->stateSize,&pVesa->statePage))
                 return FALSE;
         }
@@ -1568,7 +1568,7 @@ VESASaveRestore(ScrnInfoPtr pScrn, vbeSaveRestoreFunction function)
                 memcpy(pVesa->state, pVesa->pstate, pVesa->stateSize);
 
             if ((retval = VBESaveRestore(pVesa->pVbe,function,
-                                         (pointer)&pVesa->state,
+                                         (void*)&pVesa->state,
                                          &pVesa->stateSize,&pVesa->statePage))
                         && function == MODE_SAVE) {
                 /* don't rely on the memory not being touched */
