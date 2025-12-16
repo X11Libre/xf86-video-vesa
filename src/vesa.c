@@ -502,27 +502,7 @@ static void
 VESAFreeRec(ScrnInfoPtr pScrn)
 {
     VESAPtr pVesa = VESAGetRec(pScrn);
-#if 0
-    DisplayModePtr mode = pScrn->modes;
-    /* I am not sure if the modes will ever get freed.
-     * Anyway, the data unknown to other modules is being freed here.
-     */
-    if (mode) {
-	do {
-	    if (mode->Private) {
-		VbeModeInfoData *data = (VbeModeInfoData*)mode->Private;
 
-		if (data->block)
-		    free(data->block);
-
-		free(data);
-
-		mode->Private = NULL;
-	    }
-	    mode = mode->next;
-	} while (mode && mode != pScrn->modes);
-    }
-#endif
     free(pVesa->monitor);
     if (pVesa->vbeInfo)
 	VBEFreeVBEInfo(pVesa->vbeInfo);
