@@ -32,6 +32,5 @@ vesa_drv_la_LDFLAGS = -module -avoid-version
 vesa_drv_ladir = @moduledir@/drivers
 
 vesa_drv_la_SOURCES = \
-         compat-api.h \
          vesa.c \
          vesa.h

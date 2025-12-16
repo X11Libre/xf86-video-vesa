@@ -58,7 +58,6 @@
 
 /* DPMS */
 #include <X11/extensions/dpmsconst.h>
-#include "compat-api.h"
 
 /* Mandatory functions */
 static const OptionInfoRec * VESAAvailableOptions(int chipid, int busid);
