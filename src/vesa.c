@@ -37,10 +37,7 @@
  * - Port to RANDR 1.2 to drop the old-school DGA junk
  * - VBE/SCI for secondary DDC method?
  */
-
-#ifdef HAVE_CONFIG_H
 #include "config.h"
-#endif
 
 #include <string.h>
 #include <unistd.h>
