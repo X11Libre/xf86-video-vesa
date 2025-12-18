@@ -181,8 +181,6 @@ static const OptionInfoRec VESAOptions[] = {
     { -1,                          NULL,                 OPTV_NONE,    {0}, FALSE }
 };
 
-#ifdef XFree86LOADER
-
 /* Module loader interface */
 static MODULESETUPPROTO(vesaSetup);
 
@@ -225,8 +223,6 @@ vesaSetup(void *Module, void *Options, int *ErrorMajor, int *ErrorMinor)
 
     return (NULL);
 }
-
-#endif
 
 static const OptionInfoRec *
 VESAAvailableOptions(int chipid, int busid)
